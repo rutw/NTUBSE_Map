@@ -2,9 +2,20 @@
     DEMO STYLE
 */
 
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+/*
+STEMLab color:
+dark: #4b4b4b
+yellow: #f6c666
+blue: #648fc0
+https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=648fc0
+*/
+
+/* @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"; */
+/*https://fonts.google.com/specimen/Poppins?selection.family=Noto+Sans+TC:400,700|Poppins:300,400,500,600,700*/
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC:400,700|Poppins:300,400,500,600,700&display=swap');
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', 'Noto Sans TC',sans-serif;
     background: #fafafa;
 }
 
@@ -25,7 +36,7 @@ a:focus {
 }
 
 .navbar {
-    padding: 15px 10px;
+    padding: 10px 10px;
     background: #fff;
     border: none;
     border-radius: 0;
@@ -50,6 +61,7 @@ a:focus {
     SIDEBAR STYLE
 ----------------------------------------------------- */
 
+
 #sidebar {
     width: 300px;
     position: fixed;
@@ -57,7 +69,7 @@ a:focus {
     left: -300px;
     height: 100vh;
     z-index: 999;
-    background: #7386D5;
+    background: #648fc0; /*sidebar大部分的底色*/
     color: #fff;
     transition: all 0.3s;
     overflow-y: scroll;
@@ -76,7 +88,8 @@ a:focus {
     height: 35px;
     line-height: 35px;
     text-align: center;
-    background: #7386D5;
+    background: #f6c666; /*箭頭 平常的顏色*/
+    color: #4b4b4b;
     position: absolute;
     top: 10px;
     right: 10px;
@@ -88,7 +101,7 @@ a:focus {
 
 #dismiss:hover {
     background: #fff;
-    color: #7386D5;
+    color: #32628f; /*箭頭 滑鼠掃過的顏色*/
 }
 
 .overlay {
@@ -108,16 +121,16 @@ a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #6d7fcc;
+    background: #32628f; /*sidebar 大標題的底色*/
 }
 
 #sidebar ul.components {
-    padding: 20px 0;
-    border-bottom: 1px solid #47748b;
+    padding: 0px 0;
+    border-bottom: 1px solid #32628f; /*sidebar comp 和最下面那條線的底色*/
 }
 
 #sidebar ul p {
-    color: #fff;
+    color: #fff; /*字的顏色*/
     padding: 10px;
 }
 
@@ -128,14 +141,14 @@ a:focus {
 }
 
 #sidebar ul li a:hover {
-    color: #7386D5;
+    color: #4b4b4b; /*掃過時 文字的顏色*/
     background: #fff;
 }
 
 #sidebar ul li.active>a,
 a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
+    color: #fff  ;
+    background: #32628f; /*按下後 Layer整條的顏色*/
 }
 
 a[data-toggle="collapse"] {
@@ -153,7 +166,8 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    background: #96bff3; /*打開後的子layer底色*/
+    color: #000;
 }
 
 ul.CTAs {
@@ -170,7 +184,7 @@ ul.CTAs a {
 
 /*Buttom Style*/
 
-a.bottom1,
+/* a.bottom1,
 a.buttom1:hover {
     background: #fff;
     color: #7386D5;
@@ -180,7 +194,7 @@ a.buttom2,
 a.buttom2:hover {
     background: #6d7fcc !important;
     color: #fff !important;
-}
+} */
 
 /* ---------------------------------------------------
     CONTENT STYLE
@@ -194,4 +208,23 @@ a.buttom2:hover {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+/*Toggle Switch*/
+
+.toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20rem; }
+.toggle.ios .toggle-handle { border-radius: 20rem; }
+.toggle.android { border-radius: 0px;}
+.toggle.android .toggle-handle { border-radius: 0px; }
+
+
+a[aria-expanded=true] .fa-chevron-down {
+   display: none;
+   color: #fff  ;
+   background: #648fc0; 
+}
+a[aria-expanded=false] .fa-chevron-up {
+   display: none;
+   color: #fff  ;
+   background: #648fc0; 
 }

@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" style="margin:0px; padding:0px; width:100%; height:100%;">
+
+<!--tab icon-->
+<link rel="icon" href="img/tmp_mapicon.svg" type="image/x-icon" />
+<link rel="shortcut icon" href="img/tmp_mapicon.svg" type="image/x-icon" />
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,15 +17,21 @@
     <link rel="stylesheet" href="js/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.5.css"/>            <!-- coordinate -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>                  <!-- map -->
     <!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->                                      <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> <!-- jquery -->
     <script src="js/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.5.min.js"></script>                 <!-- coordinate -->
     <script src="js/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.5.src.js"></script>                 <!-- coordinate -->
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    
+
+
+    <!-- Bootstrap Toggle Switch CSS -->
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <!--https://gitbrent.github.io/bootstrap4-toggle/#demos-->
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
-    <!--<link rel="stylesheet" href="css/button.css">                  -->                                              <!-- button-->
+    <!-- <link rel="stylesheet" href="css/button.css">                                                               button -->
     
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
@@ -28,117 +39,257 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-
 </head>
 
 
-<body style="margin:0px; padding:0px; width:100%; height:100%; opacity:0.8;"> <!--為啥把body後面的style刪掉就跑不出來了？-->
+<body style="margin:0px; padding:0px; width:100%; height:100%; opacity:0.8;"> <!--為啥把body後面的style刪掉就跑不出來了==??-->
 
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div id="dismiss">
-            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-left"></i><!--icon 箭頭-->
         </div>
 
         <div class="sidebar-header">
-            <h3>Flood Forecast Map</h3>
+            <h3>Map Layer</h3>
+            <h3>選擇圖層</h3>
         </div>
 
-        <ul class="list-unstyled components">
-            <p>Department of Bioenvironmental Systems Engineering, NTU</p>
+        <!-- Search bar -->
+        <div class="py-2">
+            <label class="sr-only" for="inlineFormInputGroup">
+                Location
+            </label>
+            <div class="input-group px-2">            
+                <div class="input-group-prepend">
+                    <div id="closeAllarr" class="btn btn-info">                        
+                        <i data-toggle="tooltip" data-placement="bottom" title="收合圖層"" id="closeAllarr" class="fa fa-chevron-up pull-right" "></i>                       
+                    </div>
+                </div>
+                <input type="text" id="LayerInput" onclick="openAllLayer()" class="form-control"  placeholder="Search a Layer" onkeyup="searchLayer()">               
+                <!--onkeyup="searchLayer()"-->
+             </div>
+        </div>
 
-            <!--Search bar for Layer-->
-            <li>
-                <input type="text" class="form-control" id="location" placeholder="Search Layer">
-            </li>
-            <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Layer 1</a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
+        <!-- Map Layer Search List -->
+        <ul id="mapsearchLayer" class="list-unstyled components"> 
+            <li><a href="#Layer1_Submenu" data-toggle="collapse" aria-expanded="false">
+                    <span class="mapLayerForSearch">Layer 1</span>
+                </a>
+                
+                <!--href 串接下面的 id-->
+                <ul class="layerWithSubMenu collapse list-unstyled" id="Layer1_Submenu" >
+                  
                     <li>
-                        <a href="#">Layer 1-A</a>
+                        <!-- NEW HOT 的用法 https://bootstrap.hexschool.com/docs/4.0/components/badge/-->
+                        <a data-toggle="tooltip" data-placement="right" title="我是說明文字。我是說明文字。我是說明文字。我是說明文字。我是說明文字。" class="d-flex justify-content-between" href="#">
+                            <div>
+                                <span class="mapLayerForSearch">Layer 1-A</span>
+                                <span class="ml-2 badge badge-pill badge-primary">Latest Update</span>
+                            </div>
+                            <input class="layerSwitch" id="1-A" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a> 
                     </li>
+
                     <li>
-                        <a href="#">Layer 1-B</a>
+                        <a data-toggle="tooltip" data-placement="right" title="I am description. I am description. I am description. I am description. I am description. " class=" d-flex justify-content-between" href="#">
+                            <div>
+                                <span class="mapLayerForSearch">Layer 1-B</span>
+                                <span class="ml-2 badge badge-pill badge-warning">Most Viewed</span>
+                            </div>
+                            <input class="layerSwitch" id="1-B" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a>
                     </li>
+
                     <li>
-                        <a href="#">Layer 1-C</a>
+                        <a data-toggle="tooltip" data-placement="right" title="説明です。説明です。説明です。説明です。説明です。" class="d-flex justify-content-between"  href="#">
+                            <div>
+                                <span class="mapLayerForSearch">Layer 1-C</span>
+                                <span class="ml-2 badge badge-pill badge-danger">Not Available</span>
+                            </div>
+                            <input class="layerSwitch" id="1-C" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a>
                     </li>
                 </ul>
             </li>
+
             <li>              
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Layer 2</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
+                <a href="#Layer2_Submenu" data-toggle="collapse" aria-expanded="false">
+                    <span class="mapLayerForSearch">Layer 2</span>
+                </a>
+
+                <ul class="layerWithSubMenu collapse list-unstyled" id="Layer2_Submenu">
                     <li>
-                        <a href="#">Layer 2-A</a>
+                        <a data-toggle="tooltip" data-placement="right" title="我是說明文字。我是說明文字。我是說明文字。我是說明文字。我是說明文字。" class="d-flex justify-content-between"  href="#">
+                            <span class="mapLayerForSearch">Layer 2-A</span>
+                            <input class="layerSwitch" id="2-A" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a>
                     </li>
+
                     <li>
-                        <a href="#">Layer 2-B</a>
+                        <a data-toggle="tooltip" data-placement="right" title="I am description. I am description. I am description. I am description. I am description. " class="d-flex justify-content-between"  href="#">
+                            <span class="mapLayerForSearch">Layer 2-B</span>
+                            <input class="layerSwitch" id="2-B" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a>
                     </li>
+
                     <li>
-                        <a href="#">Layer 2-C</a>
+                        <a data-toggle="tooltip" data-placement="right" title="説明です。説明です。説明です。説明です。説明です。" class="d-flex justify-content-between"  href="#">
+                            <span class="mapLayerForSearch">Layer 2-C</span>
+                            <input class="layerSwitch" id="2-C" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a>
                     </li>
                 </ul>
             </li>
-            <li>
-                <a href="#">Layer 3</a>
+
+            <li>              
+                <a href="#Layer3_Submenu" data-toggle="collapse" aria-expanded="false">
+                    <span class="mapLayerForSearch">Layer 丙 中文測試</span>
+                </a>
+
+                <ul class="layerWithSubMenu collapse list-unstyled" id="Layer3_Submenu">
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" title="我是說明文字。我是說明文字。我是說明文字。我是說明文字。我是說明文字。" class="d-flex justify-content-between"  href="#">
+                            <span class="mapLayerForSearch">Layer 丙之甲</span>
+                            <input class="layerSwitch" id="3-A" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" title="I am description. I am description. I am description. I am description. I am description. " class="d-flex justify-content-between"  href="#">
+                            <span class="mapLayerForSearch">Layer 丙之乙</span>
+                            <input class="layerSwitch" id="3-B" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tooltip" data-placement="right" title="説明です。説明です。説明です。説明です。説明です。" class="d-flex justify-content-between"  href="#">
+                            <span class="mapLayerForSearch">Layer 丙之丙</span>
+                            <input class="layerSwitch" id="3-C" type="checkbox" data-toggle="toggle" data-style="ios" data-size="xs">
+                        </a>
+                    </li>
+                </ul>
             </li>
+
             <li>
-                <a href="#">Layer 4</a>
+                <a href="#">
+                    <span class="mapLayerForSearch">Layer 4</span>
+                </a>
             </li>
+
             <li>
-                <a href="#">Layer 5</a>
+                <a href="#">
+                    <span class="mapLayerForSearch">Layer 5</span>
+                </a>
             </li>
         </ul>
 
-        <ul class="list-unstyled CTAs">
+        <!-- 如果需要按鈕的話
+            
+            <ul class="list-unstyled CTAs">
             <li>
                 <a href="#" class="bottom1">Buttom1</a>
             </li>
             <li>
                 <a href="#" class="buttom2">Buttom2</a>
             </li>
-        </ul>
+        </ul> -->
     </nav>
+
+    <!--上面的 navbar-->
   
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top">
-    <div class="container-fluid">
-
-        <button type="button" id="sidebarCollapse" class="btn btn-info">
-            <i class="fas fa-align-left"></i>
+    <div class="container-fluid"> <!--填滿-->
+        <button type="button" id="sidebarCollapse" class="btn btn-info mr-lg-3">
+            <i class="fas fa-align-left mr-1"></i> <!--Layer 按鈕的 icon-->
             <span>Layer</span>
         </button>
-        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-align-justify"></i>
-        </button>
+        
+        <!--icon and title-->
+        <a class="navbar-brand d-none d-sm-block" href="index.html">
+               <!--brand 標題高亮 -到sm時隱藏-->
+               <!--https://poychang.github.io/visible-and-hidden-in-bootstrap-4/-->
+            <img src="img/tmp_mapicon.svg" width="30" height="30" class="d-inline-block align-top" alt="Flood Forecast Map">
+            <span class="h3 mx-1">Flood Forecast Map</span>
+        </a>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="nav navbar-nav ml-auto">
+        <a class="navbar-brand d-sm-none" href="index.html">
+            <!--brand sm才顯示 此時就不顯示圖標了-->
+            <!--https://poychang.github.io/visible-and-hidden-in-bootstrap-4/-->
+            <span class="h5 mx-auto">Flood Forecast Map</span>
+        </a>
+
+        <!--漢堡 右邊黑色按鈕 小於 lg 才出現-->
+        <button class="btn btn-dark d-inline-block d-lg-none" type="button" data-toggle="collapse" data-target="#navbarHomeAboutContact" aria-controls="navbarHomeAboutContact" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i><!--三條線的 icon-->
+        </button>   
+
+        <!-- Navbar links 折疊清單 -->
+        <div class="collapse navbar-collapse" id="navbarHomeAboutContact">
+            <ul class="nav navbar-nav ml-auto">            
                 
-                <!--Search bar for Location-->
-                <li class="nav-item active">
-                    <input type="text" class="form-control" id="location" placeholder="Search Location">
+                <!-- 如果要在折疊式清單裡面放標題跟圖標的話 
+                    <center><a class="navbar-brand d-sm-none" href="index.html">
+                    直到d-sm-none才顯示
+                    <img src="img/tmp_mapicon.svg" width="30" height="30" class="d-inline-block align-top align-left" alt="">
+                    <span class="h3 mx-1 align-left">Flood Forecast Map</span>
+                </a></center> -->
+
+              <!-- Searchbar -->
+                <li>
+                    <div class="nav-item ">
+                        <label class="sr-only" for="inlineFormInputGroup"></label>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" id="LocationInput" placeholder="Search a Location">     
+                        </div>                      
+                    </div>
                 </li>
 
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
+                <!--在 href="#" 填上網址-->
+                <li class="nav-item d-none d-lg-block">
+                    <a class="nav-link">|</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+
+                <li class="nav-item active mx-auto"> <!--active 表示「在這一頁」 mx-auto 表示置中-->
+                    <a class="nav-link" href="index.html"><i class="fa fa-home mr-2"></i>Home</a>            
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
+
+                <li class="nav-item d-none d-lg-block">
+                    <a class="nav-link">|</a>
+                </li>
+
+                <li class="nav-item mx-auto">
+                    <a class="nav-link" href="http://www.bse.ntu.edu.tw/" target="_blank"><i class="fa fa-info-circle mr-2"></i>About</a>
+                </li>
+
+                <li class="nav-item d-none d-lg-block">
+                    <a class="nav-link">|</a>
+                </li>
+
+                <li class="nav-item mx-auto">
+                    <a class="nav-link" href="http://www.ntu.edu.tw/" target="_blank"><i class="fa fa-comment mr-2"></i>Contact</a>
+                </li>
+
+                <!-- 如果需要 English 網頁的話
+                <li class="nav-item d-none d-lg-block">
+                    <a class="nav-link">|</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">English</a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>
     </nav>
 
-    <!--Map Under Here-->
 
-    <div id="mapid" style="margin:0px; width:100%; ; height:90%"></div>
+    <!--Map Under Here-->
+    <div id="mapid" style="margin:0px; width:100%; height: 90%"></div>
     <script>
         var mymap = L.map('mapid',{zoomControl:false});
 
@@ -170,10 +321,13 @@
         mymap.removeLayer(geojsonlayer);
         }
     };
-    $("#myonoffswitch").on("click",function(){     //click
-        clickSwitch();
-    });
+    //$("#myonoffswitch").on("click",function(){     //click
+    //    clickSwitch();
+    //}); 
     </script>
+
+
+
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -188,8 +342,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <!-- Coustom JS-->
-    <script src="js/sidebar.js"></script>
-
+    <script src="js/sidebar.js"></script> <!-- 側邊攔打開與關閉 -->
+    <script src="js/search.js"></script> <!-- 搜尋功能 -->
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script> <!-- Toggle Switch-->
+    <script src="js/toggle_switch.js"></script> <!-- 按下按鈕後的功能 -->
+    <script src="js/tooltip.js"></script> <!--懸浮提示視窗 -->
+    <script src="js/collapse_open_and_close.js"></script> <!--摺疊與打開 collpase-->
+    
 </body>
 
 </html>
