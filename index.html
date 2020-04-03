@@ -13,13 +13,13 @@
     <title>Flood Forecast Map</title>
     
     <!-- Leaflet Map-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css"/>         <!-- map -->    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css"/>     <!-- map -->    
     <link rel="stylesheet" href="js/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.5.css"/>            <!-- coordinate -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>                  <!-- map -->
-    <!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->                                      <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>              <!-- map -->
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>                                  <!-- jquery -->
     <script src="js/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.5.min.js"></script>                 <!-- coordinate -->
     <script src="js/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.5.src.js"></script>                 <!-- coordinate -->
+    <script src="js/Dictionary.js"></script>
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -237,7 +237,7 @@
 
               <!-- Searchbar -->
                 <li>
-                    <div class="nav-item ">
+                    <div class="nav-item">
                         <label class="sr-only" for="inlineFormInputGroup"></label>
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
@@ -291,8 +291,9 @@
     <!--Map Under Here-->
     <div id="mapid" style="margin:0px; width:100%; height: 90%"></div>
     <script>
-        var mymap = L.map('mapid',{zoomControl:false});
-
+    var myLayer = new Map();                                                //儲存layers的dictionary
+    var mymap = L.map('mapid',{zoomControl:false});
+   
     mymap.setView([23.6, 121], 8);
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -303,34 +304,19 @@
         id: 'mapbox.streets'
     }).addTo(mymap);
 
-    L.control.coordinates({
-        position:"bottomleft", //optional default "bootomright"
-        decimals:2, //optional default 4
-    labelTemplateLat:"N: {y}", //optional default "Lat: {y}"
-        labelTemplateLng:"E: {x}", //optional default "Lng: {x}"
-    useDMS:false //optional default false
+    L.control.zoom({                                                        //放大縮小
+     position:'bottomright                                   '
     }).addTo(mymap);
 
-    var clickSwitch = function(){                  //click
-        if ($("#myonoffswitch").is(":checked")){
-        $.getJSON("map.geojson",function(data){
-            geojsonlayer=L.geoJson(data);
-            geojsonlayer.addTo(mymap);
-        });
-        }else{
-        mymap.removeLayer(geojsonlayer);
-        }
-    };
-    //$("#myonoffswitch").on("click",function(){     //click
-    //    clickSwitch();
-    //}); 
+    L.control.coordinates({                                                 //座標
+        position:"bottomleft", //optional default "bootomright"
+        decimals:2, //optional default 4
+        labelTemplateLat:"N: {y}", //optional default "Lat: {y}"
+        labelTemplateLng:"E: {x}", //optional default "Lng: {x}"
+        useDMS:false //optional default false
+    }).addTo(mymap);
     </script>
 
-
-
-
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
     <!-- Popper.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
